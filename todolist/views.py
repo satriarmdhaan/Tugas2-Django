@@ -20,8 +20,7 @@ def show_task(request):
 
 def delete_task(request, id):
     task_list = tasklist.objects.filter(id=id)
-    task = task_list[0]
-    task.delete()
+    task_list.delete()
     return redirect('todolist:show_task')
 
 def update_task(request, id):
