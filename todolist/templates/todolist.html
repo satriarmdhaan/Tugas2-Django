@@ -1,56 +1,111 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<title>Todolist</title>
 
-<h1>Tugas 4 PBP/PBD</h1>
-<h3>Name: {{username}} </h3>
+
 
 <style>
-table, th, tr {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
+  table, th, tr {
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman';
+    background: linear-gradient(120deg, #3A6BF2, #00FFDE);
+    height: 100vh;
+  }
+  .container{
+    text-align: center;
+  }
+  .tsk-btn{
+    border-radius: 10px;
+    background: #2980b9;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 200px;
+    height:30px;
+  }
+  .tsk-btn a{
+    color: white;
+    text-decoration: none;
+  }
+  .tsk-btn a:hover{
+    text-decoration:underline;
+    transition: .5s;
+  }
+  .header{
+    font-family: 'Times New Roman';
+    text-align: center;
+  }
+  .table-btn{
+    border-radius: 10px;
+    background: #2980b9;
+    margin: 30px 0;
+    width: 100px;
+    height:30px;
+  }
+  .table-btn a{
+    color: white;
+    text-decoration: none;
+  }
+  .table-btn a:hover{
+    text-decoration:underline;
+    transition: .5s;
+  }
 </style>
-<table>
-  <tr>
-  <th>Status</th>
-  <th>Date</th>
-  <th>Title</th>
-  <th>Description</th>
-  <th>Update Task</th>
-  <th>Delete Task</th>
-  </tr>
+<body>
+  <div class="header">
+    <h1>Tugas 4 PBP/PBD</h1>
+    <h3>Name: {{username}} </h3>
+  </div>
+  <table>
+    <tr>
+    <th>Status</th>
+    <th>Date</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Update Task</th>
+    <th>Delete Task</th>
+    </tr>
 
-  {% for todolist in task_list %}
-  
-  <tr>
-    {% if todolist.is_finished %}
-      <th>Sudah</th>
-    {% else %}
-      <th>Belum</th>
-    {% endif %}
-    <th>{{todolist.date}}</th>
-    <th>{{todolist.title}}</th>
-    <th>{{todolist.description}}</th>
-    <th>
-      <button>
-        <a href="{% url 'todolist:update_task' todolist.id %}">Update</a>
-      </button>
-    </th>
-    <th>
-      <button>
-        <a href="{% url 'todolist:delete_task' todolist.id %}">Delete</a>
-      </button>
-    </th>
-  </tr>
-  {% endfor %}
-</table>
+    {% for todolist in task_list %}
+    
+    <tr>
+      {% if todolist.is_finished %}
+        <th>Sudah</th>
+      {% else %}
+        <th>Belum</th>
+      {% endif %}
+      <th>{{todolist.date}}</th>
+      <th>{{todolist.title}}</th>
+      <th>{{todolist.description}}</th>
+      <th>
+        <button class="table-btn">
+          <a  href="{% url 'todolist:update_task' todolist.id %}">Update</a>
+        </button>
+      </th>
+      <th>
+        <button class="table-btn">
+          <a  href="{% url 'todolist:delete_task' todolist.id %}">Delete</a>
+        </button>
+      </th>
+    </tr>
+    {% endfor %}
+  </table>
+  <div class="container">
+  <button class="tsk-btn">
+      <a  href="{% url 'todolist:create_task' %}">Tambah Task Baru</a>
+  </button>
 
-<button>
-    <a href="{% url 'todolist:create_task' %}">Tambah Task Baru</a>
-</button>
-
-<button>
-    <a href="{% url 'todolist:logout' %}">Logout</a>
-</button>
+  <button class="tsk-btn">
+      <a href="{% url 'todolist:logout' %}">Logout</a>
+  </button>
+  </div>
+</body>
 {% endblock content %}

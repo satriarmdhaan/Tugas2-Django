@@ -3,7 +3,71 @@
 
 {% block content %}  
 <title>Tambah Task Baru</title>
-
+<style>
+    .login{
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 10px;
+        width: 600px;
+        height: auto;
+    }
+    .login h1{
+        text-align: center;
+        padding: 0 0 10px 0;
+        border-bottom: 1px solid silver;
+    }
+    body{
+        background: linear-gradient(120deg, #3A6BF2, #00FFDE);
+    }
+    .login form{
+        padding: 0 40px;
+        box-sizing: border-box;
+    }
+    form .form-control {
+        position: relative;
+        margin: 10px 0;
+        border-radius: 10px;
+    }
+    
+    .login label{
+        font-size: 32px;
+        width:100%;
+        padding: 0 5px;
+        height: 40px;
+    }
+    input {
+        width: 100%;
+        padding: 0 5px;
+        height: 40px;
+        font-size: 16px;
+    }
+    body{
+        background: linear-gradient(120deg, #2980b9, #8e44ad);
+    }
+    input[type="submit"]{
+        width: 100%;
+        height: 50px;
+        border: 1px solid;
+        background: #2980b9;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: large;
+        color: white;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover{
+        border-color:#2980b9;
+        transition: .5s;
+    }
+</style>
+<body>
+    <div class="kembali">
+        <button>
+            <a href="{% url 'todolist:show_task' %}">Kembali</a>
+        </button>
 <div class = "login">
     
     <h1>Formulir Registrasi</h1>  
@@ -11,13 +75,30 @@
         <form method="POST" >  
             {% csrf_token %}  
             <table>  
-                {{ form.as_table }}  
                 <tr>  
+                    <th>
+                        <label for="id_title">Title:</label>
+                    </th>
+                    <td>
+                        <input type="text" name="title" maxlength="255" required="" id="id_title">
+                    </td>
+                </tr>
+                <tr>
+                <th>
+                    <label for="id_description">Description:</label>
+                </th>
+                <td>
+                    <input type="text" name="description" maxlength="255" required="" id="id_description">
+                </td>
+                </tr> 
+                <tr>
                     <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
+                    <td>
+                        <input type="submit" name="submit" value="Daftar">
+                    </td>
                 </tr>  
             </table>  
         </form>
 </div>  
-
+</body>
 {% endblock content %}
