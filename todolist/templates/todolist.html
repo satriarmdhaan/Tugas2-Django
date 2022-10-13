@@ -3,15 +3,7 @@
 {% block content %}
 <title>Todolist</title>
 
-
-
 <style>
-  table, th, tr {
-    border: 1px solid black;
-    border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
-  }
   body {
     margin: 0;
     padding: 0;
@@ -22,90 +14,79 @@
   .container{
     text-align: center;
   }
-  .tsk-btn{
-    border-radius: 10px;
-    background: #2980b9;
-    margin-top: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 200px;
-    height:30px;
-  }
-  .tsk-btn a{
-    color: white;
-    text-decoration: none;
-  }
-  .tsk-btn a:hover{
-    text-decoration:underline;
-    transition: .5s;
-  }
-  .header{
-    font-family: 'Times New Roman';
-    text-align: center;
-  }
-  .table-btn{
-    border-radius: 10px;
-    background: #2980b9;
-    margin: 30px 0;
-    width: 100px;
-    height:30px;
-  }
-  .table-btn a{
-    color: white;
-    text-decoration: none;
-  }
-  .table-btn a:hover{
-    text-decoration:underline;
-    transition: .5s;
-  }
+
 </style>
+<nav class="navbar bg-dark navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand">Nama : {{username}}</a>
+    <a  href="{% url 'todolist:create_task' %}">
+      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+        Tambah Task Baru
+      </button>
+    </a>
+
+    <a href="{% url 'todolist:logout' %}">
+      <button type="button" class="btn btn-outline-primary">
+        Logout
+      </button>
+    </a>
+  </div>
+</nav>
 <body>
-  <div class="header">
-    <h1>Tugas 4 PBP/PBD</h1>
-    <h3>Name: {{username}} </h3>
-  </div>
-  <table>
-    <tr>
-    <th>Status</th>
-    <th>Date</th>
-    <th>Title</th>
-    <th>Description</th>
-    <th>Update Task</th>
-    <th>Delete Task</th>
-    </tr>
+  <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="createModalLabel">Tambah Task Baru</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="" id="createTask">
+          {% csrf_token %}
+          <div class="mb-3">
+            <input type="text" name="title" placeholder="Task Title" class="form-control">
+          </div>
 
-    {% for todolist in task_list %}
-    
-    <tr>
-      {% if todolist.is_finished %}
-        <th>Sudah</th>
-      {% else %}
-        <th>Belum</th>
-      {% endif %}
-      <th>{{todolist.date}}</th>
-      <th>{{todolist.title}}</th>
-      <th>{{todolist.description}}</th>
-      <th>
-        <button class="table-btn">
-          <a  href="{% url 'todolist:update_task' todolist.id %}">Update</a>
-        </button>
-      </th>
-      <th>
-        <button class="table-btn">
-          <a  href="{% url 'todolist:delete_task' todolist.id %}">Delete</a>
-        </button>
-      </th>
-    </tr>
-    {% endfor %}
-  </table>
-  <div class="container">
-  <button class="tsk-btn">
-      <a  href="{% url 'todolist:create_task' %}">Tambah Task Baru</a>
-  </button>
+          <div class="mb-3">
+            <input type="text" name="description" placeholder="Task Description" class="form-control">
+          </div>
 
-  <button class="tsk-btn">
-      <a href="{% url 'todolist:logout' %}">Logout</a>
-  </button>
+          <div class="mb-3">
+            <input class="btn login_btn btn x1 btn-primary" type="submit" value="Create Task">
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
+</div>
+
+<script>
+
+</script>
+
+<div class="row row-cols-1 row-cols-md-4 g-4">
+<div class="col">
+  {% for task in task_list %}
+    <div class="card">
+        {% if task.is_finished %}
+          <div class="card-header text-bg-success text-center">Sudah</div>
+        {% else %}
+          <div class="card-header text-bg-warning text-center">Belum</div>
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{task.title}}</h5>
+            <p class="card-text">{{task.description}}</p>
+        </div>
+        <div class="card-footer">
+          <p class="card-text">{{task.date}}</p>
+                <a class="btn btn-sm btn-danger text-end" href="{% url 'todolist:delete_task' task.id %}">Delete</a>
+                <a class="btn btn-sm btn-primary text-end" href="{% url 'todolist:update_task' task.id %}">Update</a>
+                
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+
 </body>
 {% endblock content %}

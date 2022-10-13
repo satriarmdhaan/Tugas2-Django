@@ -1,34 +1,64 @@
 import datetime
-from django.http import HttpResponseRedirect
+from django.http import HttpRequest, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from todolist.forms import taskform
+from todolist.forms import taskform, updateform
 from todolist.models import tasklist
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
+import json
 
 @login_required(login_url='/todolist/login/')
+
+def add_task(request):
+    if request.method == "POST":
+        task_list = json.loads(request.POST['task_list'])
+        new_task = tasklist(title=task_list["title"], description=task_list["description"], user=request.user)
+        new_task.save()
+
+        return HttpResponse(serializers.serialize("json", [new_task]), content_type="application/json")
+    return HttpResponse()
+
 def show_task(request):
-    task_list = tasklist.objects.filter(user= request.user)
+    task_list = tasklist.objects.filter(user=request.user)
     context = {
         'task_list' : task_list,
         'username' : request.user.username,
     }
     return render(request, "todolist.html", context)
 
-def delete_task(request, id):
-    task_list = tasklist.objects.filter(id=id)
-    task_list.delete()
-    return redirect('todolist:show_task')
+def show_json(request):
+    task_list = tasklist.objects.filter(user= request.user)
+    return HttpResponse(serializers.serialize("json",task_list), content_type="application/json")
 
-def update_task(request, id):
-    task_list = tasklist.objects.filter(id=id)
-    task = task_list[0]
-    task.is_finished = not task.is_finished
-    task.save()
-    return redirect('todolist:show_task')
+def delete_task(request,task_id):
+    queryset = tasklist.objects.get(id=task_id)
+    if request.method == 'POST':
+        queryset.delete()
+        return redirect('todolist:show_task')
+    
+    context = {
+        'task':queryset
+    }
+    return render(request, 'delete_task.html', context)
+
+def update_task(request,task_id):
+	queryset = tasklist.objects.get(id=task_id)
+	form = updateform(instance=queryset)
+	if request.method == 'POST':
+		form = updateform(request.POST, instance=queryset)
+		if form.is_valid():
+			form.save()
+			return redirect('todolist:show_task')
+
+	context = {
+		'form':form
+		}
+
+	return render(request, 'update_task.html', context)
 
 def create_task(request):
     form = taskform()
@@ -73,6 +103,6 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    response = HttpResponseRedirect(reverse("todolist:show_task"))
+    response = HttpResponseRedirect(reverse("todolist:login"))
     response.delete_cookie('last_login')
-    return response
+    return redirect('todolist:login')

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% block meta %}
+	<title>Delete Task</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/todolist.css' %}">
+	{% endblock meta %}
+</head>
+
+<body>
+	{% block content %}
+
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container-fluid">
+            <h5 class="navbar-brand">Delete Task</h5>
+
+            <div class="nav navbar-nav navbar-right">
+                <button type="button" class="btn btn-light"><a href="{% url 'todolist:show_task' %}">Back</a></button>
+                <button type="button" class="btn btn-light"><a href="{% url 'todolist:logout' %}">Logout</a></button>
+            </div>
+        </div>
+    </nav>
+    <br>
+    
+    <h5 style="text-align:center;">Delete the following task?</h5>
+    <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center">
+        <div class="col">
+            <div class="card">
+                {% if task.is_finished %}
+                <div class="card-header text-bg-success text-center">Sudah</div>
+                {% else %}
+                <div class="card-header text-bg-warning text-center">Belum</div>
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">{{task.title}}</h5>
+                    <p class="card-text">{{task.description}}</p>
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+
+    <div class="container">
+        <div class="vertical-center" style="text-align: center;margin-top: 10px;">
+            <form method="POST" action="" class="justify-content-center">
+                {% csrf_token %}
+                <input class="btn btn-sm btn-danger" type="submit" value="Delete" name="Yes">
+            </form>
+        </div>
+      </div>
+
+    {% endblock content %}
+</body>

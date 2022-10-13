@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% block meta %}
+	<title>Update Task</title>
+	{% endblock meta %}
+</head>
+
+<body>
+	{% block content %}
+	<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container-fluid">
+            <h5 class="navbar-brand">Update Task</h5>
+
+            <div class="nav navbar-nav navbar-right">
+                <button type="button" class="btn btn-light"><a href="{% url 'todolist:show_task' %}" >Kembali</a></button>
+                <button type="button" class="btn btn-outline-primary"><a href="{% url 'todolist:logout' %}">Logout</a></button>
+            </div>
+        </div>
+    </nav>
+	
+	<br>
+
+	<div class="d-flex align-items-center justify-content-center">
+		<form method="POST" action="">
+			{% csrf_token %}
+			{{form}}
+			<input class="btn btn-primary" type="submit" value="Update" name="Update">
+		</form>
+	</div>
+	{% endblock content %}
+</body>

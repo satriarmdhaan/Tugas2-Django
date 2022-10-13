@@ -23,21 +23,13 @@
         background: linear-gradient(120deg, #3A6BF2, #00FFDE);
     }
     .login form{
-        padding: 0 40px;
+        padding: 0 50px;
         box-sizing: border-box;
-    }
-    form .form-control {
-        position: relative;
-        margin: 10px 0;
-        border-radius: 10px;
+        width:100%;
+        height: auto;
+        font-size: 32px;
     }
     
-    .login label{
-        font-size: 32px;
-        width:100%;
-        padding: 0 5px;
-        height: 40px;
-    }
     input {
         width: 100%;
         padding: 0 5px;
@@ -64,10 +56,11 @@
     }
 </style>
 <body>
-    <div class="kembali">
-        <button>
-            <a href="{% url 'todolist:show_task' %}">Kembali</a>
+    <a href="{% url 'todolist:show_task' %}">
+        <button type="button" class="btn btn-dark">
+            Kembali
         </button>
+    </a>
 <div class = "login">
     
     <h1>Formulir Registrasi</h1>  

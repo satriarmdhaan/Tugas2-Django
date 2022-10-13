@@ -8,3 +8,12 @@ class taskform(ModelForm):
             'title',
             'description'
         ]
+
+class updateform(ModelForm):
+    class Meta:
+        model = tasklist
+        fields = [
+            'title',
+            'description',
+            'is_finished'
+        ]
