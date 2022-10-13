@@ -16,8 +16,12 @@
             <h5 class="navbar-brand">Update Task</h5>
 
             <div class="nav navbar-nav navbar-right">
-                <button type="button" class="btn btn-light"><a href="{% url 'todolist:show_task' %}" >Kembali</a></button>
-                <button type="button" class="btn btn-outline-primary"><a href="{% url 'todolist:logout' %}">Logout</a></button>
+                <a href="{% url 'todolist:show_task' %}">
+                <button type="button" class="btn btn-outline-primary">Kembali</button>
+                </a>
+                <a href="{% url 'todolist:logout' %}">
+                <button type="button" class="btn btn-outline-primary">Logout</button>
+                </a>
             </div>
         </div>
     </nav>
